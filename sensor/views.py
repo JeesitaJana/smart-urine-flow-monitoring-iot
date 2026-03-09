@@ -6,7 +6,7 @@ from .models import UrineData, ValveControl
 
 
 def home(request):
-    return HttpResponse("Urine Monitoring System Running")
+    return render(request,'home.html')
 
 
 @api_view(['POST'])
