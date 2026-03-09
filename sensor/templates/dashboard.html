@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urine Flow Monitoring Dashboard</title>
+    <style>
+        /* --- General Page Styling --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #0056b3;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --table-header-bg: #2c3e50;
+            --table-header-text: #ffffff;
+            --row-hover: #e9ecef;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        /* --- Container / Card Styling --- */
+        .dashboard-container {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            overflow: hidden; /* Ensures corners are rounded */
+            border: 1px solid #e1e4e8;
+        }
+
+        /* --- Header Styling --- */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 25px 30px;
+            margin: 0;
+            border-bottom: 4px solid var(--secondary-color);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- Table Styling --- */
+        .table-wrapper {
+            padding: 20px;
+            overflow-x: auto; /* Makes table scrollable on very small screens */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.95rem;
+        }
+
+        thead {
+            background-color: var(--table-header-bg);
+            color: var(--table-header-text);
+        }
+
+        th {
+            text-align: left;
+            padding: 15px 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            color: #555;
+        }
+
+        /* Zebra Striping */
+        tbody tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        /* Hover Effect */
+        tbody tr:hover {
+            background-color: var(--row-hover);
+            transition: background-color 0.2s ease;
+        }
+
+        /* --- Specific Column Styling --- */
+        .col-id {
+            font-weight: bold;
+            color: var(--primary-color);
+            width: 10%;
+        }
+
+        .col-volume {
+            font-weight: bold;
+            color: #28a745; /* Green for volume */
+            font-family: monospace;
+            font-size: 1.1em;
+        }
+
+        .col-time {
+            color: #777;
+            font-size: 0.9em;
+        }
+
+        /* --- Footer / Status --- */
+        .footer {
+            padding: 15px 30px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #eee;
+            font-size: 0.85rem;
+            color: #888;
+            text-align: right;
+        }
+
+        /* --- Responsive Tweaks --- */
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            header h1 { font-size: 1.2rem; }
+            th, td { padding: 12px 15px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-container">
+        <header>
+            <h1>Urine Collection System</h1>
+        </header>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Volume (ml)</th>
+                        <th>Time Recorded</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in data %}
+                    <tr>
+                        <td class="col-id">#{{item.id}}</td>
+                        <td class="col-volume">{{item.volume}} ml</td>
+                        <td class="col-time">{{item.created}}</td>
+                    </tr>
+                    {% endfor %}
+                    
+                    <!-- Optional: Show this if data is empty -->
+                    {% if not data %}
+                    <tr>
+                        <td colspan="3" style="text-align:center; padding: 20px; color: #999;">
+                            No data recorded yet.
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            System Status: Active &bull; Last Updated: Just now
+        </div>
+    </div>
+
+</body>
+</html>

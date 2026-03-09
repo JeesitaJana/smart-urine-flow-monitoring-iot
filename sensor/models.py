@@ -1,0 +1,13 @@
+from django.db import models
+
+class UrineData(models.Model):
+    volume = models.FloatField()
+    created = models.DateTimeField(auto_now_add=True)
+
+
+class UrineData(models.Model):
+    volume = models.FloatField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+class ValveControl(models.Model):
+    state = models.BooleanField(default=False)
