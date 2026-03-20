@@ -66,6 +66,7 @@
             letter-spacing: -0.5px;
             background: linear-gradient(to right, #fff, #94a3b8);
             -webkit-background-clip: text;
+            background-clip: text; 
             -webkit-text-fill-color: transparent;
         }
 
@@ -197,9 +198,9 @@
                based on your {{status.state}} value. 
                For now, it defaults to a neutral state.
             -->
-            <div class="status-badge">
+            <div class="status-badge {% if state == 'OPEN' %}status-open{% else %}status-closed{% endif %}">
                 <span class="status-dot"></span>
-                {{status.state}}
+                    {{state}}
             </div>
         </div>
 

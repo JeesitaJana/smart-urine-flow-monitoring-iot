@@ -5,6 +5,10 @@ from django.shortcuts import render
 from .models import UrineData, ValveControl
 
 
+
+
+
+
 def home(request):
     return render(request,'home.html')
 
@@ -27,27 +31,32 @@ def dashboard(request):
 
     return render(request,'dashboard.html',{'data':data})
 
-
-
-
+import serial
+import time
 def control_page(request):
+
+    state = "CLOSED"
 
     if request.method == "POST":
 
         action = request.POST.get("action")
+        print("Button pressed:", action)
 
-        if action == "urine":
-            ValveControl.objects.all().delete()
-            ValveControl.objects.create(state=True)
+        try:
+            ser = get_serial()
 
-        elif action == "noturine":
-            ValveControl.objects.all().delete()
-            ValveControl.objects.create(state=False)
+            if action == "urine":
+                ser.write(b"URINE\n")
+                state = "OPEN"
 
-    status = ValveControl.objects.first()
+            elif action == "noturine":
+                ser.write(b"NOT_URINE\n")
+                state = "CLOSED"
 
-    return render(request, "control.html", {"status": status})
+        except Exception as e:
+            print("Serial Error:", e)
 
+    return render(request,"control.html",{"state":state})
 
 @api_view(['GET'])
 def get_valve_state(request):
@@ -58,3 +67,13 @@ def get_valve_state(request):
         return Response({"state": state.state})
 
     return Response({"state": False})
+
+
+ser = None
+
+def get_serial():
+    global ser
+    if ser is None or not ser.is_open:
+        ser = serial.Serial('COM3', 115200, timeout=1)
+        time.sleep(2)  # wait for ESP reset
+    return ser

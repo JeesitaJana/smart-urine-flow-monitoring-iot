@@ -16,13 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from sensor.views import receive_data,home, dashboard, control_page, get_valve_state
+from sensor.views import home, dashboard, control_page, receive_data, get_valve_state
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('data/',receive_data),
-    path('', home),
-    path('dashboard/',dashboard),
-    path('control/', control_page),
-    path('get_valve_state/', get_valve_state),
+
+    path('', home, name='home'),
+    path('dashboard/', dashboard, name='dashboard'),
+    path('control/', control_page, name='control'),
+    path('receive-data/', receive_data, name='receive_data'),
+    path('valve-state/', get_valve_state, name='valve_state'),
 ]
